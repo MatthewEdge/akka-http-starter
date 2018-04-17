@@ -1,0 +1,41 @@
+{
+  "name": "TODO",
+  "description": "CodeBuild definition",
+  "source": {
+    "type": "GITHUB",
+    "location": "https://github.com/MatthewEdge/TODO.git",
+    "buildspec": "buildspec.yml",
+    "auth": {
+      "type": "OAUTH",
+      "resource": ""
+    }
+  },
+  "artifacts": {
+    "type": "NO_ARTIFACTS"
+  },
+  "cache": {
+    "type": "NO_CACHE",
+    "location":""
+  },
+  "environment": {
+    "type": "LINUX_CONTAINER",
+    "image": "aws/codebuild/docker:17.09.0",
+    "computeType": "BUILD_GENERAL1_SMALL",
+    "environmentVariables": [
+      { "name": "AWS_REGION", "value": "us-east-1", "type": "PLAINTEXT" },
+      { "name": "IMAGE_REPO_NAME", "value": "TODO", "type": "PLAINTEXT" },
+      { "name": "IMAGE_TAG", "value": "${VERSION}", "type": "PLAINTEXT" },
+      { "name": "AWS_ACCOUNT_ID", "value": "${AWS_ACCOUNT_ID}", "type": "PLAINTEXT" }
+    ],
+    "privilegedMode": true,
+    "certificate": ""
+  },
+  "serviceRole": "${CB_IAM_ROLE}",
+  "encryptionKey": "${CB_ENC_KEY}",
+  "vpcConfig": {
+    "vpcId": "",
+    "subnets": [""],
+    "securityGroupIds": [""]
+  },
+  "badgeEnabled": true
+}
