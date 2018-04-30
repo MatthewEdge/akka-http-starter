@@ -1,7 +1,7 @@
-package mono
+package medgelabs
 
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import mono.hello.{Hello, HelloJsonSupport, HelloRoute}
+import medgelabs.{Hello, HelloJsonSupport, HelloRoute}
 import org.scalatest.{FlatSpec, Matchers}
 
 class HelloRouteTest extends FlatSpec with Matchers with ScalatestRouteTest with HelloJsonSupport {

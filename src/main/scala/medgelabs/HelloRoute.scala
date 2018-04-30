@@ -1,7 +1,6 @@
-package mono.hello
+package medgelabs
 
 import akka.http.scaladsl.server.{Directives, Route}
-import mono.JsonSupport
 
 case class Hello(msg: String)
 

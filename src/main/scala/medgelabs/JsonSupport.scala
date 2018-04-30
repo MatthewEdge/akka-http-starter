@@ -1,4 +1,4 @@
-package mono
+package medgelabs
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import spray.json.DefaultJsonProtocol

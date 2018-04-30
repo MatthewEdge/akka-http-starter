@@ -1,4 +1,4 @@
-package mono
+package medgelabs
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
