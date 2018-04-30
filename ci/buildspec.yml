@@ -1,29 +1,35 @@
 version: 0.2
 
+# Build Spec file for AWS CodeBuild for deploying Scala Docker services to ECR. Must be running
+# on an image that has Docker installed (tested on the CodeBuild provided image)
+
 # ENV Vars to set in CodeBuild
 #
-# AWS_REGION      - AWS Default Region     (e.g. us-east-1)
-# IMAGE_REPO_NAME - Name of the image repo (e.g. my-app)
-# IMAGE_TAG       - Tag for the image      (e.g. latest)
-# AWS_ACCOUNT_ID  - Remote AWS account id  (e.g. 555555555555)
+# AWS_ACCOUNT_ID  - AWS Account ID  (e.g. 555555555555)
+# AWS_REGION      - AWS Default Region (e.g. us-east-1)
+# IMAGE_REPO_NAME - Name of the image repository in ECR (e.g. my-app)
+#
+# IMAGE_TAG is derived from the version found in build.sbt
 
 phases:
     install:
         commands:
             - git log -1
-            - printenv
-            - whoami
+            - git branch
             - echo ${CODEBUILD_BUILD_ID}
     pre_build:
         commands:
             - echo "ECR login"
-            - $(aws ecr get-login --region ${AWS_REGION})
+            - $(aws ecr get-login --no-include-email --region ${AWS_REGION})
     build:
         commands:
             - echo "Building image"
-            - docker build -t ${IMAGE_REPO_NAME} .
-            - docker tag $IMAGE_REPO_NAME:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
+            - export IMAGE_TAG=$(cat build.sbt | grep '[ \t]*version :=' | sed 's/.*"\(.*\)".*/\1/')
+            - docker build -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .
+            - echo "Creating tag ${IMAGE_TAG}"
+            - docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
     post_build:
         commands:
             - echo "Publishing to ECR"
             - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
+            # - TODO ECS Deployment
