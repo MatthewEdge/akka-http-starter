@@ -2,6 +2,9 @@ name := "monorepo"
 version := "0.1"
 scalaVersion := "2.12.4"
 
+assemblyJarName in assembly := "app.jar"
+mainClass in assembly := Some("medgelabs.Main")
+
 // Akka
 val akkaVersion = "2.5.11"
 val akkaDeps = Seq(
