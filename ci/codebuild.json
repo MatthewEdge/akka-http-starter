@@ -4,7 +4,7 @@
   "source": {
     "type": "GITHUB",
     "location": "https://github.com/MatthewEdge/TODO.git",
-    "buildspec": "buildspec.yml",
+    "buildspec": "ci/buildspec.yml",
     "auth": {
       "type": "OAUTH",
       "resource": ""
@@ -24,18 +24,10 @@
     "environmentVariables": [
       { "name": "AWS_REGION", "value": "us-east-1", "type": "PLAINTEXT" },
       { "name": "IMAGE_REPO_NAME", "value": "TODO", "type": "PLAINTEXT" },
-      { "name": "IMAGE_TAG", "value": "${VERSION}", "type": "PLAINTEXT" },
       { "name": "AWS_ACCOUNT_ID", "value": "${AWS_ACCOUNT_ID}", "type": "PLAINTEXT" }
     ],
-    "privilegedMode": true,
-    "certificate": ""
+    "privilegedMode": true
   },
   "serviceRole": "${CB_IAM_ROLE}",
-  "encryptionKey": "${CB_ENC_KEY}",
-  "vpcConfig": {
-    "vpcId": "",
-    "subnets": [""],
-    "securityGroupIds": [""]
-  },
   "badgeEnabled": true
 }
